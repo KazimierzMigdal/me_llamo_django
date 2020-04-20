@@ -1,0 +1,99 @@
+{% load static %}
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <!--Import Google Icon Font-->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="{% static 'memo_card/main.css' %}">
+  <!-- Compiled and minified CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
+
+  <title>Me llamo Django</title>
+</head>
+<body>
+  <nav class="nav-wrapper red  darken-1">
+    <div class="container">
+        <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+        <a href="{% url 'home' %}" class="brand-logo">Me llamo Django</a>
+        <ul class="right hide-on-med-and-down">
+          {% if user.is_authenticated%}
+            <li><a href="{% url 'home' %}">Home</a></li>
+          {% else %}
+            <li><a href="#">Zaloguj</a></li>
+          {% endif %}
+          <li><a href="#">About</a></li>
+          {% if user.is_authenticated%}
+          <li><a href="{% url 'logout' %}" class="btn-floating z-depth-0 red  darken-1">
+            <i class="material-icons">power_settings_new</i>
+          </a></li>
+          {% endif %}
+        </ul>
+      </div>
+  </nav>
+
+  <ul id="slide-out" class="sidenav">
+    {% if user.is_authenticated%}
+      <li><div class="user-view">
+        <div class="background">
+          <img src="/media/background.JPG">
+        </div>
+        <a href="#user"><img class="circle" src="{{ request.user.profile.image.url }}"></a>
+        <a href="#name"><span class="white-text name">{{request.user.username}}</span></a>
+        <a href="#email"><span class="white-text email">{{request.user.email}}</span></a>
+      </div></li>
+      <li><a href="{% url 'home' %}"><i class="material-icons">home</i>Strona główna</a></li>
+      <li><a href="{% url 'dictionary' %}"><i class="material-icons">library_books</i>Mój słownik</a></li>
+      <li><a href="{% url 'statistics' %}"><i class="material-icons">show_chart</i>Moje statystyki</a></li>
+      <li><div class="divider"></div></li>
+      <li><a class="waves-effect" href="{% url 'cards' %}"><i class="material-icons">all_inclusive</i>Powtórz fiszki</a></li>
+      <li><a href="{% url 'logout' %}"><i class="material-icons">power_settings_new</i>Wyloguj</a></li>
+    {% else %}
+      <li><a class="waves-effect" href="#!">About</a></li>
+      <li><a class="waves-effect" href="{% url 'login' %}">Zaloguj się</a></li>
+      <li><a class="waves-effect" href="{% url 'register' %}">Zarejestruj się</a></li>
+      <li><a class="waves-effect" href="{% url 'password_reset' %}">Odzyskaj hasło</a></li>
+    {% endif %}
+  </ul>
+
+  <ul class="sidenav" id="mobile-links">
+    <li><a href="#">Home</a></li>
+    <li><a href="#">About</a></li>
+    <li><a href="#">Contact</a></li>
+  </ul>
+
+<div class="container">
+ {% block content %}{% endblock %}
+</div>
+{% block action-btn %}{% endblock %}
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
+  <!--Import JQuery CDN for ChartJS -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.bundle.min.js"></script>
+   <script>
+    $(document).ready(function(){
+      $('.sidenav').sidenav();
+      $('input#input_text, textarea#textarea2').characterCounter();
+      {% if messages %}
+        {% for message in messages %}
+            {% if message.tags == 'success'%}
+                M.toast({html: "{{message}}", classes: 'green rounded', displayLength:2000});
+            {% elif message.tags == 'warning'%}
+                M.toast({html: "{{message}}", classes: 'yellow rounded', displayLength:10000});
+            {% elif message.tags == 'error'%}
+                M.toast({html: "{{message}}", classes: 'red rounded', displayLength:10000});
+            {% endif %}
+        {% endfor %}
+      {% endif %}
+      $('.fixed-action-btn').floatingActionButton();
+      $('.collapsible').collapsible();
+      {% block scripts %}
+      {% endblock %}
+    });
+    $('#reverse').click(function() {
+      $('#cos').removeClass('scale-out').addClass('scale-in');
+    });
+  </script>
+</body>

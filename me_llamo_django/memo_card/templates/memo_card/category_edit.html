@@ -1,0 +1,42 @@
+{% extends "memo_card/base.html" %}
+
+{% block content %}
+    <div class="row">
+      <div class="col s12 m12 l12">
+        <div class="card">
+          <div class="card-stacked">
+            <div class="card-content">
+              <span class="card-title center-align">Edytuj katygorię: {{category.title}}</span>
+              <div class="row">
+                <form method="POST" class="col s12">
+                  {% csrf_token %}
+                  <div class="row">
+                    <div class="input-field col s12">
+                      {{form.title}}
+                      <label for="input_text">Tytuł katygorii</label>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="input-field col s12">
+                      {{form.description}}
+                      <label for="textarea2">Opis katygorii</label>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col l4 m4 s4">
+                      <a href="{% url 'category_delete' category.id %}" class="waves-effect waves-light btn red left"><i class="material-icons">delete</i></a>
+                    </div>
+                    <div class="col l4 m4 s4 offset-s4 offset-m4 offset-l4">
+                      <button class="btn-floating waves-effect waves-light red right" type="submit"><i class="material-icons">arrow_forward</i></button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+{% endblock %}
+
+

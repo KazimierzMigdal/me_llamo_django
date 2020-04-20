@@ -1,0 +1,59 @@
+{% extends "memo_card/base.html" %}
+
+{% block content %}
+<form method="POST" enctype="multipart/form-data">
+{% csrf_token %}
+  <div class="row">
+    <div class="col s12 m12 l12">
+      <div class="card horizontal">
+        <div class="card-image">
+          <img style="max-height: 10vh;" src="{{ request.user.profile.image.url }}">
+        </div>
+        <div class="card-stacked">
+          <div class="card-content">
+            <div class="row">
+              <div class="file-field input-field">
+                <div class="waves-effect waves-light btn-small red">
+                  <i class="material-icons">add_a_photo</i>
+                  {{ p_form.image }}
+                </div>
+                <div class="file-path-wrapper">
+                  <input class="file-path validate" type="text">
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="input-field">
+                {{u_form.username}}
+                <label for=Username"">Username</label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="input-field">
+                {{u_form.email}}
+                <label for="email">Email</label>
+              </div>
+            </div>
+            <div class="row">
+              <p class="range-field">
+                {{p_form.new_card_number}}
+                <!-- <input type="range" id="test5" min="1" max="50" /> -->
+                <label for="test5">Liczba nowych fiszek na dzień</label>
+              </p>
+            </div>
+            <div class="row">
+              <div class="col l4 m4 s4">
+                <a href="#" class="waves-effect waves-light btn red left"><i class="material-icons">vpn_key</i></a>
+              </div>
+              <div class="col l4 m4 s4 offset-s4 offset-m4 offset-l4">
+                <button class="btn-floating waves-effect waves-light red right" type="submit"><i class="material-icons">arrow_forward</i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+{% endblock %}
+

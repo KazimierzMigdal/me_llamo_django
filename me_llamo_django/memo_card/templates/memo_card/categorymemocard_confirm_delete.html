@@ -1,0 +1,26 @@
+{% extends "memo_card/base.html" %}
+{% block content %}
+<div class="row">
+  <div class="col s12 m12 l12">
+    <form method="POST">
+    {% csrf_token %}
+    <div class="card horizontal">
+      <div class="card-stacked">
+        <div class="card-content">
+            <span class="card-title flow-text">Czy chcesz usunąć  katygorię: {{object.title}}?</span>
+            <span class="grey-text">{{object.description}}</span>
+            <div class="row" style="margin-top: 5px;">
+                <div class="col l4 m4 s4">
+                    <a href="{% url 'category' %}" class="waves-effect waves-light btn red left"><i class="material-icons left">arrow_back</i>Wróć</a>
+                </div>
+                <div class="col l4 m4 s4 offset-s4 offset-m4 offset-l4">
+                    <button type="submit" class="waves-effect waves-light btn red right"><i class="material-icons right">delete</i>Usuń</button>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+    </form>
+  </div>
+</div>
+{% endblock content %}

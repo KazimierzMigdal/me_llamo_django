@@ -1,0 +1,23 @@
+{% extends "memo_card/base.html" %}
+
+{% block content %}
+  <h4>Mój słownik:</h4>
+  <ul class="collapsible">
+    {% for word in words %}
+      {% with esp_word=word.card.esp_title pl_word=word.card.pl_title esp_eg=word.card.esp_eg pl_eg=word.card.pl_eg %}
+        <li>
+          <div class="collapsible-header">
+            <strong>{{esp_word}}</strong>
+            <span class="badge">{{pl_word}}</span></div>
+          <div class="collapsible-body">
+            <p>{{esp_eg}}</p>
+            <p class="grey-text">{{pl_eg}}</p>
+          </div>
+        </li>
+      {% endwith %}
+    {% endfor %}
+  </ul>
+
+{% endblock %}
+
+

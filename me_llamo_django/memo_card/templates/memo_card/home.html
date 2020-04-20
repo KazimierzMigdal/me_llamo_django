@@ -1,0 +1,90 @@
+{% extends "memo_card/base.html" %}
+
+{% block content %}
+      <div class="row">
+        <div class="col s12 m12 l12">
+        <div class="card horizontal">
+          <div class="card-image">
+            <img style="max-height: 10vh;" src="{{ request.user.profile.image.url }}">
+          </div>
+          <div class="card-stacked">
+            <div class="card-content">
+              <span class="card-title flow-text">{{request.user.username}}</span>
+              <span class="left grey-text">{{request.user.email}}</span>
+              <a href="{% url 'profile_edit' %}" style="color: inherit;">
+                  <span class="right grey-text"><i class="material-icons Tiny grey-text" style="vertical-align: -3px;">settings</i>Edytuj</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
+      <div class="row">
+
+        <div class="col s12 m6 l6">
+          <a href="{% url 'dictionary' %}" style="color: inherit;"><div class="card horizontal">
+            <div class="card-image">
+              <i class="material-icons medium">library_books</i>
+            </div>
+            <div class="card-stacked">
+              <div class="card-content">
+                <span class="card-title">Mój słownik</span>
+                <span class="left grey-text">Sprawdź jakie słówka poznałeś dzięki tej stronie</span>
+              </div>
+            </div>
+          </div></a>
+        </div>
+
+        <div class="col s12 m6 l6">
+          <a href="{% url 'statistics' %}" style="color: inherit;"><div class="card horizontal">
+            <div class="card-image">
+              <i class="material-icons medium">show_chart</i>
+            </div>
+            <div class="card-stacked">
+              <div class="card-content">
+                <span class="card-title">Moje statystyki</span>
+                <span class="left grey-text">Sprawdź jak idzie ci nauka</span>
+              </div>
+            </div>
+          </div></a>
+        </div>
+
+      </div>
+
+      <div class="row">
+        <div class="col s12 m12 l12">
+        <a href="{% url 'cards' %}" style="color: inherit;"><div class="card horizontal">
+            <div class="card-image">
+              <i class="material-icons medium">all_inclusive</i>
+            </div>
+            <div class="card-stacked">
+              <div class="card-content">
+                <span class="card-title flow-text">Zacznij powtórkę</span>
+                <span class="left grey-text">Na dziś przygotowaliśmy dla ciebie 40 fiszek</span>
+              </div>
+            </div>
+        </div></a>
+      </div>
+      </div>
+
+      <div class="row">
+
+        <div class="col s12 m12 l12">
+          <a href="{% url 'category' %}" style="color: inherit;"><div class="card horizontal">
+            <div class="card-image">
+              <i class="material-icons medium">view_agenda</i>
+            </div>
+            <div class="card-stacked">
+              <div class="card-content">
+                <span class="card-title">Moje kolekcje</span>
+                <span class="left grey-text">Przeglądaj swoje kolekcje fiszek</span>
+                <br>
+              </div>
+            </div>
+          </div></a>
+        </div>
+
+      </div>
+  {% endblock %}
+
+
