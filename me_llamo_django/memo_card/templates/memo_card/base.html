@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <!--Import Google Icon Font-->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <link rel="stylesheet" type="text/css" href="{% static 'memo_card/main.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
   <!-- Compiled and minified CSS -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
 
@@ -76,14 +76,24 @@
     $(document).ready(function(){
       $('.sidenav').sidenav();
       $('input#input_text, textarea#textarea2').characterCounter();
+      {% if form.errors %}
+          {% for field in form %}
+              {% for error in field.errors %}
+                M.toast({html: "{{ error|escape }}", classes: 'red rounded', displayLength:5000});
+              {% endfor %}
+          {% endfor %}
+          {% for error in form.non_field_errors %}
+            M.toast({html: "{{ error|escape }}", classes: 'red rounded', displayLength:5000});
+          {% endfor %}
+      {% endif %}
       {% if messages %}
         {% for message in messages %}
             {% if message.tags == 'success'%}
-                M.toast({html: "{{message}}", classes: 'green rounded', displayLength:2000});
+                M.toast({html: "{{message}}", classes: 'green rounded', displayLength:5000});
             {% elif message.tags == 'warning'%}
-                M.toast({html: "{{message}}", classes: 'yellow rounded', displayLength:10000});
+                M.toast({html: "{{message}}", classes: 'yellow rounded', displayLength:5000});
             {% elif message.tags == 'error'%}
-                M.toast({html: "{{message}}", classes: 'red rounded', displayLength:10000});
+                M.toast({html: "{{message}}", classes: 'red rounded', displayLength:5000});
             {% endif %}
         {% endfor %}
       {% endif %}
@@ -93,7 +103,7 @@
       {% endblock %}
     });
     $('#reverse').click(function() {
-      $('#cos').removeClass('scale-out').addClass('scale-in');
+      $('#near').removeClass('scale-out').addClass('scale-in');
     });
   </script>
 </body>

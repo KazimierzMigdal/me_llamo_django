@@ -45,7 +45,7 @@ class CategoryMemoCard(models.Model):
 
 
 class MemoCard(models.Model):
-    SEX_TAG_CHOISE = [('Shop','Shop'),
+    GRUP_CHOISE = [('Shop','Shop'),
                     ('Activity', 'Activity'),
                     ('Time','Time'),
                     ('Hospital','Hospital'),
@@ -63,7 +63,7 @@ class MemoCard(models.Model):
     esp_bold=models.TextField(null = True, blank=True)
     pl_title = models.CharField(max_length=200)
     pl_eg = models.TextField(null = True, blank=True)
-    grup = models.CharField(choices = SEX_TAG_CHOISE, null=True, blank=True, max_length=20)
+    grup = models.CharField(choices = GRUP_CHOISE, null=True, blank=True, max_length=20)
     pl_bold=models.TextField(null = True, blank=True)
 
     objects = CardMenager()

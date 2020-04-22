@@ -23,12 +23,12 @@
             <div class="card-stacked">
               <div class="card-content">
                 <span class="card-title">Dzisiaj</span>
-                {%if right or wrong or near%}
-                  <div>
-                      <canvas id="myChart_3" style="position: relative; height: 70vh; width: 25vw;"></canvas>
-                  </div>
-                {% else %}
+                {%if day_right.0 is 0 and day_wrong.0 is 0 and day_near.0 is 0 %}
                   <p>Nie ma jeszcze statystyk z dzisiejszego dnia. Powtórz fiszki by zobaczyć swoje efekty</p>
+                {% else %}
+                  <div>
+                      <canvas id="day-statistic" style=" position: relative; height: 70vh; width: 25vw;"></canvas>
+                  </div>
                 {% endif %}
               </div>
             </div>
@@ -42,7 +42,7 @@
                 <span class="card-title">W tym tygodniu</span>
                 {%if week_right or week_wrong or week_near%}
                   <div>
-                      <canvas id="myChart_4" style="position: relative; height: 70vh; width: 25vw;"></canvas>
+                      <canvas id="week-statistic-pie" style=" position: relative; height: 70vh; width: 25vw;"></canvas>
                   </div>
                 {% else %}
                   <p>Nie ma jeszcze statystyk z tego tygodnia. Powtórz fiszki by zobaczyć swoje efekty</p>
@@ -59,9 +59,9 @@
             <div class="card-stacked">
               <div class="card-content">
                 <span class="card-title">Dzień po dniu</span>
-                  {%if right or wrong or near%}
+                  {%if week_right or week_wrong or week_near%}
                   <div>
-                      <canvas id="bar-chart-grouped" style="position: relative; height: 70vh; width: 65vw;"></canvas>
+                      <canvas id="week-statistic-bar" style=" position: relative; height: 70vh; width: 65vw;"></canvas>
                   </div>
                   {% else %}
                   <p>Nie ma jeszcze statystyk z tego tygodnia. Powtórz fiszki by zobaczyć swoje efekty</p>
@@ -76,27 +76,7 @@
 
 
 {% block scripts %}
-var ctx = document.getElementById("myChart_3").getContext('2d');
-var myChart = new Chart(ctx, {
-  type: 'pie',
-  data: {
-    labels: ["Dobrze", "Źle", "Blisko"],
-    datasets: [{
-      backgroundColor: [
-        "rgba(76, 175, 80, 1)",
-        "rgba(244, 67, 54, 1)",
-        "rgba(255, 235, 59, 1)"
-      ],
-      data: [{{ day_right.0 }}, {{day_wrong.0}}, {{day_near.0}}]
-    }]
-  },
-  options: {
-    maintainAspectRatio: false,
-    responsive: true
-    }
-  });
-
-var ctx = document.getElementById("myChart_4").getContext('2d');
+var ctx = document.getElementById("week-statistic-pie").getContext('2d');
 var myChart = new Chart(ctx, {
   type: 'pie',
   data: {
@@ -116,7 +96,7 @@ var myChart = new Chart(ctx, {
     }
   });
 
-new Chart(document.getElementById("bar-chart-grouped"), {
+new Chart(document.getElementById("week-statistic-bar"), {
     type: 'bar',
     data: {
       labels: [{% for day in days reversed %} '{{ day }}' {% if not forloop.last%}, {% endif %}{% endfor%}],
@@ -151,5 +131,27 @@ new Chart(document.getElementById("bar-chart-grouped"), {
       }
     }
 });
+
+var ctx = document.getElementById("day-statistic").getContext('2d');
+var myChart = new Chart(ctx, {
+  type: 'pie',
+  data: {
+    labels: ["Dobrze", "Źle", "Blisko"],
+    datasets: [{
+      backgroundColor: [
+        "rgba(76, 175, 80, 1)",
+        "rgba(244, 67, 54, 1)",
+        "rgba(255, 235, 59, 1)"
+      ],
+      data: [{{ day_right.0 }}, {{day_wrong.0}}, {{day_near.0}}]
+    }]
+  },
+  options: {
+    maintainAspectRatio: false,
+    responsive: true
+    }
+  });
+
+
 
 {% endblock %}

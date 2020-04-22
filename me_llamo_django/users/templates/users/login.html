@@ -25,7 +25,24 @@
                     </div>
                   </div>
                   <div class="row">
-                    <button class="btn-floating waves-effect waves-light red right" type="submit"><i class="material-icons">arrow_forward</i></button>
+                    <div id='loader' class="right" style="display: none;">
+                      <div class="preloader-wrapper active">
+                        <div class="spinner-layer spinner-red-only">
+                          <div class="circle-clipper left">
+                            <div class="circle"></div>
+                          </div>
+                          <div class="gap-patch">
+                            <div class="circle"></div>
+                          </div>
+                          <div class="circle-clipper right">
+                            <div class="circle"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div id='lol' class="right">
+                        <button class="btn-floating waves-effect waves-light red right" type="submit" id="submit"><i class="material-icons">arrow_forward</i></button>
+                    </div>
                   </div>
                   <div class="row">
                     <div class="col">
@@ -40,3 +57,14 @@
       </div>
     </div>
 {% endblock %}
+
+
+{% block scripts %}
+$("#submit").click(function(){
+        setTimeout('$("#lol").hide()',500);
+        setTimeout('$("#loader").show()',500);
+        setTimeout('$("#loader").hide()',10000);
+        setTimeout('$("#lol").show()',10000);
+        });
+{% endblock %}
+

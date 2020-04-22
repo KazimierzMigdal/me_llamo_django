@@ -2,7 +2,7 @@
 
 {% block content %}
     <div class="row">
-      <a href="{% url 'category_form' %}" style="color: inherit;"><div class="col s12 m12 l12">
+      <a href="{% url 'category_form' %}" class='card-link'><div class="col s12 m12 l12">
         <div class="card horizontal">
           <div class="card-image">
             <i class="material-icons medium">create</i>
@@ -19,7 +19,7 @@
     <h4>Moje kolekcje</h4>
     {% for category in categories %}
       <div class="row">
-        <a href="{% url 'category_detail' category.id %}" style="color: inherit;"><div class="col s12 m12 l12">
+        <a href="{% url 'category_detail' category.id %}" class='card-link'><div class="col s12 m12 l12">
           <div class="card horizontal">
             <div class="card-image">
               <i class="material-icons medium">view_agenda</i>

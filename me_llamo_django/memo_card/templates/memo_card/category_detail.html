@@ -9,8 +9,8 @@
           <span class="card-title flow-text">{{category.title}}</span>
           <span class="left grey-text">{{category.description}}</span>
           <br><br><br>
-          <a href="{% url 'category_edit' category.id %}" style="color: inherit;">
-            <span class="right grey-text"><i class="material-icons Tiny grey-text" style="vertical-align: -3px;">settings</i>Edytuj</span>
+          <a href="{% url 'category_edit' category.id %}" class='card-link'>
+            <span class="right grey-text"><i class="material-icons Tiny grey-text settings">settings</i>Edytuj</span>
           </a>
         </div>
       </div>
@@ -19,7 +19,7 @@
 </div>
 
 <div class="row">
-  <a href="{% url 'memocard_form' category.id %}" style="color: inherit;"><div class="col s12 m6 l6">
+  <a href="{% url 'memocard_form' category.id %}" class='card-link'><div class="col s12 m6 l6">
     <div class="card horizontal">
       <div class="card-image">
         <i class="material-icons medium">create</i>
@@ -33,7 +33,7 @@
   </div></a>
 
   <div class="col s12 m6 l6">
-    <a href="{% url 'category_memocard' category.id %}" style="color: inherit;"><div class="card horizontal">
+    <a href="{% url 'category_memocard' category.id %}" class='card-link'><div class="card horizontal">
       <div class="card-image">
         <i class="material-icons medium">view_agenda</i>
       </div>
@@ -47,7 +47,7 @@
 </div>
 
 <div class="row">
-  <a href="{% url 'memocard_repead' category.id %}" style="color: inherit;"><div class="col s12 m12 l12">
+  <a href="{% url 'memocard_repead' category.id %}" class='card-link'><div class="col s12 m12 l12">
     <div class="card horizontal">
       <div class="card-image">
         <i class="material-icons medium">all_inclusive</i>

@@ -3,7 +3,7 @@
 {% block content %}
 <div class="row">
   <div class="col s12 m12 l12">
-    <a href="{% url 'category_detail' category.id %}" style="color: inherit;"><div class="card horizontal">
+    <a href="{% url 'category_detail' category.id %}" class='card-link'><div class="card horizontal">
       <div class="card-image">
         <i class="material-icons medium">view_agenda</i>
       </div>
@@ -23,7 +23,7 @@
       <div class="card-content">
         <span class="card-title activator"><strong>{{memocard.title}}</strong><i id="reverse" class="material-icons right">redo</i></span>
         <p class="grey-text">{{memocard.eg}}</p>
-        <div class="row" style="margin-top: 10px;">
+        <div class="row">
           <a href="#" class="waves-effect waves-light btn btn-floating btn-small red left"><i class="material-icons right">build</i></a>
           <a href="{% url 'card_delete' memocard.id %}" class="waves-effect waves-light btn btn-floating btn-small red right"><i class="material-icons">clear</i></a>
         </div>

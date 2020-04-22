@@ -1,0 +1,16 @@
+.card-link{
+    color: inherit;
+}
+
+.card.memo-card{
+    margin-top: 25vh;
+}
+
+.material-icons.settings{
+    vertical-align: -3px;
+}
+
+.profile-img{
+    max-height: 10vh;
+}
+

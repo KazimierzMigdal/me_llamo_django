@@ -1,10 +1,18 @@
-from .forms import ProfileUpdateForm, UserRegisterForm, UserUpdateForm
+from .forms import ProfileUpdateForm, UserRegisterForm, UserUpdateForm,MyAuthForm
 from django import forms
 from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.views import PasswordResetView, PasswordResetConfirmView
+from django.contrib.auth.views import PasswordResetView, PasswordResetConfirmView, LoginView
+from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import render, redirect
+
+
+class MyLoginView(SuccessMessageMixin, LoginView):
+    authentication_form = MyAuthForm
+    success_url = '/'
+    success_message = "Zalogowano poprawnie"
+    template_name = 'users/login.html'
 
 
 class MyPasswordResetView(PasswordResetView):
@@ -15,6 +23,7 @@ class MyPasswordResetView(PasswordResetView):
         form.fields['email'].widget = forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Email'})
         form.fields['email'].lable = ''
         return form
+
 
 class MyPasswordResetConfirmView(PasswordResetConfirmView):
     def get_form(self, form_class=None):
@@ -28,6 +37,7 @@ class MyPasswordResetConfirmView(PasswordResetConfirmView):
         form.fields['new_password2'].label = False
         form.fields['new_password2'].help_text = None
         return form
+
 
 def register(request):
     if request.method == 'POST':

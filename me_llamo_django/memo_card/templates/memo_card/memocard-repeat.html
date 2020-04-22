@@ -2,7 +2,7 @@
 
 {% block content %}
   {% if memocard %}
-    <div class="card" style="margin-top: 25vh;">
+    <div class="card memo-card">
       <div class="card-content">
         <span class="card-title activator"><strong>{{memocard.title}}</strong><i id="reverse" class="material-icons right">redo</i></span>
         <p class="grey-text">{{memocard.eg}}</p>
@@ -23,13 +23,13 @@
       </div>
     </div>
   {% else %}
-    <div class="card" style="margin-top: 25vh;">
+    <div class="card memo-card">
       <div class="card-content">
         <span class="card-title"><strong>W tej katygorii nie ma jeszcze fiszek</strong></span>
         <p class="grey-text">Dodaj fiszki do tej katygorii żeby móc je powtarzać</p>
         <br>
         <div class="row">
-          <a href="{% url 'category_detail' category.id %}"  style="color: inherit;"><button class="btn-floating waves-effect waves-light red right"><i class="material-icons">arrow_forward</i></button></a>
+          <a href="{% url 'category_detail' category.id %}"  class='card-link'><button class="btn-floating waves-effect waves-light red right"><i class="material-icons">arrow_forward</i></button></a>
         </div>
         <br>
       </div>
