@@ -6,12 +6,6 @@ import datetime
 
 def statistics(request):
     user = request.user
-    today = today = datetime.date.today()
-    today_stats = Statistic.objects.get(Q(user=user)&Q(day=today))
-    right = today_stats.right
-    wrong = today_stats.wrong
-    near = today_stats.near
-
     days = []
     day_right = []
     day_wrong = []
@@ -34,15 +28,13 @@ def statistics(request):
             day_right.append(0)
             day_wrong.append(0)
             day_near.append(0)
-    context = {'right':right,
-            'wrong': wrong,
-            'near':near,
-            'week_right': week_right,
-            'week_wrong': week_wrong,
-            'week_near' : week_near,
-            'days':days,
-            'day_right':day_right,
-            'day_wrong':day_wrong,
-            'day_near':day_near
+    context = {
+        'week_right': week_right,
+        'week_wrong': week_wrong,
+        'week_near' : week_near,
+        'days':days,
+        'day_right':day_right,
+        'day_wrong':day_wrong,
+        'day_near':day_near
     }
     return render(request, 'stats/statistics.html', context)

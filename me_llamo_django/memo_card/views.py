@@ -24,41 +24,8 @@ def cards(request):
         word = []
     if request.method == 'POST':
         value = request.POST.get("save_answer")
-        counter = word.counter
-        if value == 'right':
-            stats.right = stats.right + 1
-            stats.save()
-            word.counter = word.counter + 1
-            if word.counter == 1:
-                word.repeat_on = datetime.date.today() + datetime.timedelta(days=2)
-                messages.success(request, f"Ta fiszka wróci do ciebie za 2 dni")
-            elif word.counter == 2:
-                word.repeat_on = datetime.date.today() + datetime.timedelta(days=7)
-                messages.success(request, f"Ta fiszka wróci do ciebie za 7 dni")
-            elif word.counter == 3:
-                word.repeat_on = datetime.date.today() + datetime.timedelta(days=14)
-                messages.success(request, f"Ta fiszka wróci do ciebie za 2 tygodnie")
-            elif word.counter == 4:
-                word.repeat_on = datetime.date.today() + datetime.timedelta(days=30)
-                messages.success(request, f"Ta fiszka wróci do ciebie w przyszłym miesiącu")
-            elif word.counter == 5:
-                word.repeat_on = datetime.date.today() + datetime.timedelta(days=60)
-                messages.success(request, f"Ta fiszka wróci do ciebie za 2 miesiące")
-            elif word.counter == 5:
-                word.repeat_on = datetime.date.today() + datetime.timedelta(days=183)
-                messages.success(request, f"Ta fiszka wróci do ciebie za pół roku")
-        elif value == 'wrong':
-            stats.wrong = stats.wrong + 1
-            stats.save()
-            word.counter = 0
-            word.repeat_on = datetime.date.today() + datetime.timedelta(days=1)
-            messages.error(request, f"Ta fiszka wróci do ciebie jutro")
-        else:
-            stats.near = stats.near + 1
-            stats.save()
-            word.repeat_on = datetime.date.today() + datetime.timedelta(days=1)
-            messages.warning(request, f"Ta fiszka wróci do ciebie jutro")
-        word.save()
+        answer = request.POST.get("save_answer")
+        MemoCard.objects.leitner(request, word, answer)
         return redirect('cards')
     return render(request, 'memo_card/cards.html', {'word':word})
 

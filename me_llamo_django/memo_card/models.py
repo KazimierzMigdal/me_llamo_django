@@ -1,4 +1,6 @@
 from django.db import models
+from django.db.models import Q
+from django.contrib import messages
 from django.contrib.auth.models import User
 from stats.models import Statistic
 import datetime
@@ -30,6 +32,44 @@ class CardMenager(models.Manager):
             repeat.save()
         user.profile.last_card_generaterd = datetime.date.today()
         user.profile.save()
+
+    def leitner(self, request, repeat, answer):
+        user = request.user
+        stats = Statistic.objects.get(Q(day=datetime.date.today())&Q(user=user))
+        if answer == 'right':
+            stats.right = stats.right + 1
+            repeat.counter = repeat.counter + 1
+            if repeat.counter == 1:
+                repeat.repeat_on = datetime.date.today() + datetime.timedelta(days=2)
+                message = messages.success(request, f"Ta fiszka wróci do ciebie za 2 dni")
+            elif repeat.counter == 2:
+                repeat.repeat_on = datetime.date.today() + datetime.timedelta(days=7)
+                message = messages.success(request, f"Ta fiszka wróci do ciebie za 7 dni")
+            elif repeat.counter == 3:
+                repeat.repeat_on = datetime.date.today() + datetime.timedelta(days=14)
+                message = messages.success(request, f"Ta fiszka wróci do ciebie za 2 tygodnie")
+            elif repeat.counter == 4:
+                repeat.repeat_on = datetime.date.today() + datetime.timedelta(days=30)
+                message = messages.success(request, f"Ta fiszka wróci do ciebie w przyszłym miesiącu")
+            elif repeat.counter == 5:
+                repeat.repeat_on = datetime.date.today() + datetime.timedelta(days=60)
+                message = messages.success(request, f"Ta fiszka wróci do ciebie za 2 miesiące")
+            elif repeat.counter == 5:
+                repeat.repeat_on = datetime.date.today() + datetime.timedelta(days=183)
+                message = messages.success(request, f"Ta fiszka wróci do ciebie za pół roku")
+        elif answer == 'wrong':
+            stats.wrong = stats.wrong + 1
+            repeat.counter = 0
+            repeat.repeat_on = datetime.date.today() + datetime.timedelta(days=1)
+            message = messages.error(request, f"Ta fiszka wróci do ciebie jutro")
+        else:
+            stats.near = stats.near + 1
+            repeat.repeat_on = datetime.date.today() + datetime.timedelta(days=1)
+            message = messages.warning(request, f"Ta fiszka wróci do ciebie jutro")
+        stats.save()
+        repeat.save()
+
+        return message
 
 
 class CategoryMemoCard(models.Model):
