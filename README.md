@@ -28,7 +28,7 @@ git clone https://github.com/KazimierzMigdal/me_llamo_django.git
 
 **7.** Go to me_llamo_django directory and update the databases by typing into CMD/Command prompt 
 ```
-python menage.py migrate
+python manage.py migrate
 ```
 **8.** The repository contains the necessary memocards. Upload them to a previously created table in the database by typing into CMD/Command prompt 
 ```
