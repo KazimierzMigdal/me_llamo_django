@@ -16,6 +16,8 @@ def cards(request):
     user = request.user
     today = datetime.date.today()
     stats = Statistic.objects.get(Q(day=today)&Q(user=user))
+    if user.profile.last_card_generaterd != today:
+        MemoCard.objects.new_card(user)
     try:
         word = Repeat.objects.filter(
         Q(user_for=user)&Q(repeat_on=today)
@@ -83,18 +85,14 @@ def category_form(request):
 @login_required
 def dictionary(request):
     user = request.user
+    if user.profile.last_card_generaterd != datetime.date.today():
+        MemoCard.objects.new_card(user)
     words = Repeat.objects.filter(user_for=user).order_by('card__esp_title')
     return render(request, 'memo_card/dictionary.html', {'words': words})
 
 
 @login_required
 def main(request):
-    user = request.user
-    last_card_generaterd = user.profile.last_card_generaterd
-    today = datetime.date.today()
-    if last_card_generaterd != today:
-        MemoCard.objects.new_card(user)
-
     return render(request, 'memo_card/home.html', {})
 
 
@@ -121,7 +119,6 @@ def memocard_creator(request, pk):
 @login_required
 def memocard_delete(request, pk):
     memocard = UserMemoCard.objects.get(id=pk)
-    pk = memocard.category.id
     memocard.delete()
     messages.error(request, f"fiszka usunięta")
     return redirect('category_memocard', pk=pk)

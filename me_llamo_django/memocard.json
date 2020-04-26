@@ -1,0 +1,132 @@
+[
+  {
+    "model": "memo_card.memocard",
+    "pk": 1,
+    "fields": {
+      "esp_title": "aprender idiomas",
+      "esp_eg": "He empezado a aprender español",
+      "esp_bold":"aprender espanol",
+      "pl_title":"uczyć się języków",
+      "pl_eg":"Zacząłem się uczyć hiszpańskiego",
+      "grup":"Activity",
+      "pl_bold":"uczyć hiszpańskiego"
+    }
+  },
+  {
+    "model": "memo_card.memocard",
+    "pk": 2,
+    "fields": {
+      "esp_title": "leer",
+      "esp_eg": "¿Te gusta leer?",
+      "esp_bold":"leer",
+      "pl_title":"czytać",
+      "pl_eg":"Lubisz czytać (książki)?",
+      "grup":"Activity",
+      "pl_bold":"czytać"
+    }
+  },
+    {
+    "model": "memo_card.memocard",
+    "pk": 3,
+    "fields": {
+      "esp_title": "hacer deporte",
+      "esp_eg": "Hacemos deporte bastante a menudo, por lo menos tres a la semana vamos a la piscina o a correr.",
+      "esp_bold":"Hacemos deporte",
+      "pl_title":"uprawiać sport",
+      "pl_eg":"Uprawiamy sport dość często, przynajmniej trzy razy w tygodniu chodzimy na basen lub pobiegać",
+      "grup":"Activity",
+      "pl_bold":"uprawiać sport"
+    }
+  },
+    {
+    "model": "memo_card.memocard",
+    "pk": 4,
+    "fields": {
+      "esp_title": "agradecerle algo a alguien",
+      "esp_eg": "Te agradezco mucho te ayuda",
+      "esp_bold":"agradezco",
+      "pl_title":"Zawdzięczać coś komuś",
+      "pl_eg":"Jestem ci bardzo wdzięczny za pomoc",
+      "grup":"Meeting",
+      "pl_bold":"wdzięczny"
+    }
+  },
+    {
+    "model": "memo_card.memocard",
+    "pk": 5,
+    "fields": {
+      "esp_title": "ir a bailar",
+      "esp_eg": "¿Por qué no vamos a bailar?",
+      "esp_bold":"vamos a bailar",
+      "pl_title":"iść potańczyć",
+      "pl_eg":"A może pójdziemy potańczyć?",
+      "grup":"Activity",
+      "pl_bold":"pójdziemy potańczyć"
+    }
+  },
+    {
+    "model": "memo_card.memocard",
+    "pk": 6,
+    "fields": {
+      "esp_title": "invitar",
+      "esp_eg": "Carlos me ha invitado a su boda.",
+      "esp_bold":"he invitado",
+      "pl_title":"zapraszać",
+      "pl_eg":"Carlos zaprosił mnie na swój ślub.",
+      "grup":"Activity",
+      "pl_bold":"zaprosił"
+    }
+  },
+    {
+    "model": "memo_card.memocard",
+    "pk": 7,
+    "fields": {
+      "esp_title": "ir en bici",
+      "esp_eg": "Alberto va mucho en bici.",
+      "esp_bold":"en bici",
+      "pl_title":"jeździć na rowerze",
+      "pl_eg":"Alberto dużo jeździ na rowerze.",
+      "grup":"Activity",
+      "pl_bold":"jeździ na rowerze"
+    }
+  },
+    {
+    "model": "memo_card.memocard",
+    "pk": 8,
+    "fields": {
+      "esp_title": "nadar",
+      "esp_eg": "Me encanta nadar en este logo.",
+      "esp_bold":"nadar",
+      "pl_title":"pływać",
+      "pl_eg":"Uwielbiam pływać w tym jeziorze",
+      "grup":"Activity",
+      "pl_bold":"pływać"
+    }
+  },
+    {
+    "model": "memo_card.memocard",
+    "pk": 9,
+    "fields": {
+      "esp_title": "jugar al fútbol",
+      "esp_eg": "Todos los fines ad seman voy a jugar al fútbol.",
+      "esp_bold":"jugar al fútbol.",
+      "pl_title":"gra w piłkę nożną",
+      "pl_eg":"W każdy weekend chodzę grać w piłkę nożną.",
+      "grup":"Activity",
+      "pl_bold":"grać w piłkę nożną"
+    }
+  },
+    {
+    "model": "memo_card.memocard",
+    "pk": 10,
+    "fields": {
+      "esp_title": "nacer",
+      "esp_eg": "Nací el 25 de septiembre de 1976.",
+      "esp_bold":"Nací",
+      "pl_title":"urodzić się",
+      "pl_eg":"Urodziłem się 25 września 1976 roku.",
+      "grup":"Family",
+      "pl_bold":"Urodziłem się"
+    }
+  }
+]

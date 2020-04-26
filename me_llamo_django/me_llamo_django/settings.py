@@ -25,7 +25,7 @@ SECRET_KEY = '=s&#&ca1t=0@#*blo0(7_unhn7k(gxjj+9@-#$el@2i1ylz$8d'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0:8888','0911d4ea.ngrok.io']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0:8888','7dd666c5.ngrok.io']
 
 
 # Application definition
@@ -78,8 +78,12 @@ WSGI_APPLICATION = 'me_llamo_django.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'me_llamo_django',
+        'USER': 'me_llamo_django',
+        'PASSWORD' :'me_llamo_django',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 
