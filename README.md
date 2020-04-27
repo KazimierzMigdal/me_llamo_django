@@ -26,21 +26,26 @@ git clone https://github.com/KazimierzMigdal/me_llamo_django.git
 
 **6.** Create virtual environment
 
-**7.** Go to me_llamo_django directory and update the databases by typing into CMD/Command prompt 
+**7.** Create virtual environment, activate it and install install packages from the requirements.txt:
+```
+pip install -r requirements.txt
+```
+
+**8.** Go to me_llamo_django directory and update the databases by typing into CMD/Command prompt 
 ```
 python manage.py migrate
 ```
-**8.** The repository contains the necessary memocards. Upload them to a previously created table in the database by typing into CMD/Command prompt 
+**9.** The repository contains the necessary memocards. Upload them to a previously created table in the database by typing into CMD/Command prompt 
 ```
 python manage.py loaddata memocard.json
 ```
-**9.** Run server by typing into CMD/Command prompt:
+**10.** Run server by typing into CMD/Command prompt:
 ```
 python manage.py runserver
 ```
 The **Me llamo django** is available at the address http://127.0.0.1
 
-**10.** You can create administrator by typing into CMD/Command prompt:
+**11.** You can create administrator by typing into CMD/Command prompt:
 ```
 python3 manage.py createsuperuser
 ```
