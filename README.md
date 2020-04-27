@@ -47,5 +47,5 @@ The **Me llamo django** is available at the address http://127.0.0.1
 
 **11.** You can create administrator by typing into CMD/Command prompt:
 ```
-python3 manage.py createsuperuser
+python manage.py createsuperuser
 ```
