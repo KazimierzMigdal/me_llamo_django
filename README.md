@@ -43,7 +43,7 @@ python manage.py loaddata memocard.json
 ```
 python manage.py runserver
 ```
-The **Me llamo django** is available at the address http://127.0.0.1
+The **Me llamo django** is available at the address http://127.0.0.1:8000
 
 **11.** You can create administrator by typing into CMD/Command prompt:
 ```
