@@ -71,10 +71,20 @@ class CategoryDetail(LoginRequiredMixin, DetailView):
         return context
 
 
-@login_required
-def category_detail(request, pk):
-    category = CategoryMemoCard.objects.get(id=pk)
-    return render(request, 'memo_card/category_detail.html', {'category': category})
+# path('category/<int:pk>/all/', views.category_detail_all, name ='category_memocard')
+class CategoryMemoCardList(LoginRequiredMixin, ListView):
+    model = UserMemoCard
+    template_name = "memo_card/category_detail_all.html"
+    context_object_name = 'memocards'
+
+    def get_context_data(self, **kwargs):
+        context = super(CategoryMemoCardList, self).get_context_data(**kwargs)
+        context['category'] = CategoryMemoCard.objects.get(id=self.kwargs.get('pk'))
+        return context
+
+    def get_queryset(self):
+        category = CategoryMemoCard.objects.get(id=self.kwargs.get('pk'))
+        return UserMemoCard.objects.filter(category=category)
 
 
 @login_required
