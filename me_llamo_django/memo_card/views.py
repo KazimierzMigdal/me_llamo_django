@@ -139,12 +139,16 @@ def memocard_creator(request, pk):
     return render(request, 'memo_card/memocard-creator.html', {'category': category, 'form': form})
 
 
-@login_required
-def memocard_delete(request, pk):
-    memocard = UserMemoCard.objects.get(id=pk)
-    memocard.delete()
-    messages.error(request, f"fiszka usunięta")
-    return redirect('category_memocard', pk=pk)
+class MemoCardDeleteView(LoginRequiredMixin,DeleteView):
+    model = UserMemoCard
+
+    def get_success_url(self):
+        category = self.object.category
+        messages.error(self.request, f"fiszka usunięta")
+        return reverse_lazy( 'category_memocard', kwargs={'pk': category.id})
+
+    def get(self, request, *args, **kwargs):
+        return self.post(request, *args, **kwargs)
 
 
 @login_required
