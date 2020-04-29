@@ -6,7 +6,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.db.models import Q
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
-from django.views.generic import DeleteView, TemplateView, ListView, DetailView
+from django.views.generic import DeleteView, TemplateView, ListView, DetailView, CreateView
 from stats.models import Statistic
 import datetime
 
@@ -32,7 +32,7 @@ def cards(request):
     return render(request, 'memo_card/cards.html', {'word':word})
 
 
-class Category(LoginRequiredMixin, ListView):
+class CategoryListView(LoginRequiredMixin, ListView):
     model = CategoryMemoCard
     context_object_name = 'categories'
     template_name = "memo_card/category.html"
@@ -60,25 +60,24 @@ class CategoryDeleteView(LoginRequiredMixin,UserPassesTestMixin,DeleteView):
             return False
 
 
-class CategoryDetail(LoginRequiredMixin, DetailView):
+class CategoryDetailView(LoginRequiredMixin, DetailView):
     context_object_name = 'category'
     template_name = "memo_card/category_detail.html"
     queryset = CategoryMemoCard.objects.all()
 
     def get_context_data(self, **kwargs):
-        context = super(CategoryDetail, self).get_context_data(**kwargs)
+        context = super(CategoryDetailView, self).get_context_data(**kwargs)
         context['category'] = self.get_object()
         return context
 
 
-# path('category/<int:pk>/all/', views.category_detail_all, name ='category_memocard')
-class CategoryMemoCardList(LoginRequiredMixin, ListView):
+class MemoCardListView(LoginRequiredMixin, ListView):
     model = UserMemoCard
     template_name = "memo_card/category_detail_all.html"
     context_object_name = 'memocards'
 
     def get_context_data(self, **kwargs):
-        context = super(CategoryMemoCardList, self).get_context_data(**kwargs)
+        context = super(MemoCardListView, self).get_context_data(**kwargs)
         context['category'] = CategoryMemoCard.objects.get(id=self.kwargs.get('pk'))
         return context
 
@@ -87,27 +86,21 @@ class CategoryMemoCardList(LoginRequiredMixin, ListView):
         return UserMemoCard.objects.filter(category=category)
 
 
-@login_required
-def category_detail_all(request, pk):
-    category = CategoryMemoCard.objects.get(id=pk)
-    memocards = UserMemoCard.objects.filter(category=category)
-    return render(request, 'memo_card/category_detail_all.html', {'category': category, 'memocards': memocards})
+class CategoryCreationView(LoginRequiredMixin, CreateView):
+    model = CategoryMemoCard
+    form_class = CategoryCreationForm
+    template_name = 'memo_card/category_form.html'
 
+    def get_form(self, form_class=None):
+        if form_class is None:
+            form_class = self.get_form_class()
+        form = super(CategoryCreationView, self).get_form(form_class)
+        return form
 
-@login_required
-def category_form(request):
-    if request.method == 'POST':
-        form = CategoryCreationForm(request.POST)
-        if form.is_valid():
-            category = form.save(commit=False)
-            category.author = request.user
-            category.save()
-            title = form.cleaned_data.get('title')
-            messages.success(request, f'Katygoria {title} została stworzona. Dodaj do niej fiszki')
-            return redirect('category')
-    else:
-        form = CategoryCreationForm()
-    return render(request, 'memo_card/category_form.html', {'form': form})
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        messages.success(self.request, f'Storzono katygorię! Możesz dodać do niej fiszki.')
+        return super().form_valid(form)
 
 
 @login_required
@@ -174,7 +167,6 @@ def memocard_repeat(request, pk):
         memocard = UserMemoCard.objects.filter(category=category).order_by('?')[0]
     except:
         memocard = []
-    print(memocard)
     return render(request, 'memo_card/memocard-repeat.html',{'category': category, 'memocard': memocard})
 
 

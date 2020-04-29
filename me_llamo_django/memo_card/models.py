@@ -2,6 +2,7 @@ from django.db import models
 from django.db.models import Q
 from django.contrib import messages
 from django.contrib.auth.models import User
+from django.urls import reverse
 from stats.models import Statistic
 import datetime
 
