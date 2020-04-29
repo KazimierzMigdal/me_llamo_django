@@ -119,24 +119,29 @@ class Dictionary(LoginRequiredMixin, ListView):
         return Repeat.objects.filter(user_for=user).order_by('card__esp_title')
 
 
-@login_required
-def memocard_creator(request, pk):
-    category = CategoryMemoCard.objects.get(id=pk)
-    if request.method == 'POST':
-        form = UserMemocardCreationForm(request.POST)
-        value = request.POST.get("save")
-        if form.is_valid():
-            memocard = form.save(commit=False)
-            memocard.category = category
-            memocard.save()
-            messages.success(request, f'Fiszka została dodana')
-            if value == 'save':
-                return redirect('category_detail', pk=pk)
-            else:
-                return redirect('memocard_form', pk=pk)
-    else:
-        form = UserMemocardCreationForm()
-    return render(request, 'memo_card/memocard-creator.html', {'category': category, 'form': form})
+class MemoCardCreateView(LoginRequiredMixin, CreateView):
+    model = UserMemoCard
+    form_class = UserMemocardCreationForm
+    template_name = 'memo_card/memocard-creator.html'
+
+    def get_form(self, form_class=None):
+        if form_class is None:
+            form_class = self.get_form_class()
+        form = super(MemoCardCreateView, self).get_form(form_class)
+        return form
+
+    def form_valid(self, form):
+        form.instance.category = CategoryMemoCard.objects.get(id=self.kwargs.get('pk'))
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        value = self.request.POST.get("save")
+        if value == 'save':
+            messages.success(self.request, f'Storzono fiszkę!')
+            return reverse_lazy('category_detail', kwargs={'pk': self.kwargs.get('pk')})
+        else:
+            messages.success(self.request, f'Storzono fiszkę! Możesz dodać kolejną.')
+            return reverse_lazy('memocard_form', kwargs={'pk': self.kwargs.get('pk')})
 
 
 class MemoCardDeleteView(LoginRequiredMixin,DeleteView):
