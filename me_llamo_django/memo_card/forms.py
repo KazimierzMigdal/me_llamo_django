@@ -30,3 +30,6 @@ class UserMemocardCreationForm(forms.ModelForm):
         model = UserMemoCard
         fields = ('title','eg', 'reverse_title', 'reverse_eg')
 
+
+class MyForm(forms.Form):
+    repeads = forms.CharField(widget = forms.HiddenInput(), required = False)

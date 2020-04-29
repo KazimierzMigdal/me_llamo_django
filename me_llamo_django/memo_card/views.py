@@ -1,4 +1,4 @@
-from .forms import CategoryCreationForm, CategoryUpdateForm, UserMemocardCreationForm
+from .forms import CategoryCreationForm, CategoryUpdateForm, UserMemocardCreationForm, MyForm
 from .models import CategoryMemoCard, MemoCard, Repeat, UserMemoCard
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -7,29 +7,33 @@ from django.db.models import Q
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import DeleteView, TemplateView, ListView, DetailView, CreateView
+from django.views.generic.detail import SingleObjectMixin
+from django.views.generic.edit import FormMixin
 from stats.models import Statistic
 import datetime
 
 
-@login_required
-def cards(request):
-    user = request.user
-    today = datetime.date.today()
-    stats = Statistic.objects.get(Q(day=today)&Q(user=user))
-    if user.profile.last_card_generaterd != today:
-        MemoCard.objects.new_card(user)
-    try:
-        word = Repeat.objects.filter(
-        Q(user_for=user)&Q(repeat_on=today)
-        )[0]
-    except:
-        word = []
-    if request.method == 'POST':
-        value = request.POST.get("save_answer")
+class Cards(LoginRequiredMixin, ListView, FormMixin):
+    model = Repeat
+    context_object_name = 'word'
+    template_name = "memo_card/cards.html"
+    form_class = MyForm
+
+    def get_queryset(self):
+        user = self.request.user
+        today = datetime.date.today()
+        if user.profile.last_card_generaterd != datetime.date.today():
+            MemoCard.objects.new_card(user)
+        try:
+            return Repeat.objects.filter(Q(user_for=user)&Q(repeat_on=today))[0]
+        except:
+            return []
+
+    def post(self, request):
+        word = self.get_queryset()
         answer = request.POST.get("save_answer")
         MemoCard.objects.leitner(request, word, answer)
         return redirect('cards')
-    return render(request, 'memo_card/cards.html', {'word':word})
 
 
 class CategoryListView(LoginRequiredMixin, ListView):
