@@ -6,7 +6,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.db.models import Q
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
-from django.views.generic import DeleteView, TemplateView, ListView
+from django.views.generic import DeleteView, TemplateView, ListView, DetailView
 from stats.models import Statistic
 import datetime
 
@@ -58,6 +58,17 @@ class CategoryDeleteView(LoginRequiredMixin,UserPassesTestMixin,DeleteView):
             return True
         else:
             return False
+
+
+class CategoryDetail(LoginRequiredMixin, DetailView):
+    context_object_name = 'category'
+    template_name = "memo_card/category_detail.html"
+    queryset = CategoryMemoCard.objects.all()
+
+    def get_context_data(self, **kwargs):
+        context = super(CategoryDetail, self).get_context_data(**kwargs)
+        context['category'] = self.get_object()
+        return context
 
 
 @login_required
