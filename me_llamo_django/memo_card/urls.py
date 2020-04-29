@@ -14,5 +14,5 @@ urlpatterns = [
     path('category/<int:pk>/memocard-creator/', views.memocard_creator, name ='memocard_form'),
     path('category/<int:pk>/repeat/', views.memocard_repeat, name ='memocard_repead'),
     path('category/form/', views.CategoryCreationView.as_view(), name ='category_form'),
-    path('dictionary/', views.dictionary, name='dictionary'),
+    path('dictionary/', views.Dictionary.as_view(), name='dictionary'),
 ]

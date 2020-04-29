@@ -103,18 +103,16 @@ class CategoryCreationView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-@login_required
-def dictionary(request):
-    user = request.user
-    if user.profile.last_card_generaterd != datetime.date.today():
-        MemoCard.objects.new_card(user)
-    words = Repeat.objects.filter(user_for=user).order_by('card__esp_title')
-    return render(request, 'memo_card/dictionary.html', {'words': words})
+class Dictionary(LoginRequiredMixin, ListView):
+    model = Repeat
+    context_object_name = 'words'
+    template_name = 'memo_card/dictionary.html'
 
-
-@login_required
-def main(request):
-    return render(request, 'memo_card/home.html', {})
+    def get_queryset(self):
+        user = self.request.user
+        if user.profile.last_card_generaterd != datetime.date.today():
+            MemoCard.objects.new_card(user)
+        return Repeat.objects.filter(user_for=user).order_by('card__esp_title')
 
 
 @login_required
