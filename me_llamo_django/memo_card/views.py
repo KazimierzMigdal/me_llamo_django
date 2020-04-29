@@ -6,7 +6,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.db.models import Q
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
-from django.views.generic import DeleteView
+from django.views.generic import DeleteView, TemplateView
 from stats.models import Statistic
 import datetime
 
@@ -37,6 +37,10 @@ def category(request):
     user = request.user
     categories = CategoryMemoCard.objects.filter(author=user)
     return render(request, 'memo_card/category.html', {'categories': categories})
+
+
+class HomeView(LoginRequiredMixin, TemplateView):
+    template_name = "memo_card/home.html"
 
 
 class CategoryDeleteView(LoginRequiredMixin,UserPassesTestMixin,DeleteView):
