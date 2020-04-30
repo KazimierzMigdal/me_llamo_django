@@ -188,6 +188,16 @@ class MemoCardRepeatView(LoginRequiredMixin, ListView):
             return []
 
 
+class MemoCardDetailView(LoginRequiredMixin, DetailView):
+    context_object_name = 'memocard'
+    template_name = 'memo_card/memocard_detail.html'
+    queryset = UserMemoCard.objects.all()
+
+    def get_context_data(self, **kwargs):
+        context = super(MemoCardDetailView, self).get_context_data(**kwargs)
+        context['memocard'] = self.get_object()
+        return context
+
 
 @login_required
 def memocard_detail(request, pk):

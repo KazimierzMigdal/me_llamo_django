@@ -3,7 +3,7 @@ from . import views
 
 urlpatterns = [
     path('', views.HomeView.as_view(), name='home'),
-    path('card/<int:pk>/', views.memocard_detail, name='card_detail'),
+    path('card/<int:pk>/', views.MemoCardDetailView.as_view(), name='card_detail'),
     path('card/<int:pk>/delete/', views.MemoCardDeleteView.as_view(), name='card_delete'),
     path('cards/', views.Cards.as_view(), name='cards'),
     path('category/', views.CategoryListView.as_view(), name ='category'),
