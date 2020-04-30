@@ -6,7 +6,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.db.models import Q
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
-from django.views.generic import DeleteView, TemplateView, ListView, DetailView, CreateView
+from django.views.generic import DeleteView, TemplateView, ListView, DetailView, CreateView, UpdateView
 from django.views.generic.detail import SingleObjectMixin
 from django.views.generic.edit import FormMixin
 from stats.models import Statistic
@@ -156,19 +156,23 @@ class MemoCardDeleteView(LoginRequiredMixin,DeleteView):
         return self.post(request, *args, **kwargs)
 
 
-@login_required
-def category_edit(request, pk):
-    category = CategoryMemoCard.objects.get(id=pk)
-    if request.method == 'POST':
-        form = CategoryUpdateForm(request.POST,
-                                instance=category)
-        if form.is_valid():
-            form.save()
-            messages.success(request, f'Katygoria została poprawiona')
-            return redirect('category_detail', pk=pk)
-    else:
-        form = CategoryUpdateForm(instance=category)
-    return render(request, 'memo_card/category_edit.html',{'category': category, 'form':form})
+class CategoryUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView, FormMixin):
+    model = CategoryMemoCard
+    context_object_name = 'category'
+    template_name = 'memo_card/category_edit.html'
+    form_class = CategoryUpdateForm
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        messages.success(self.request, f'Katygoria została poprawiona')
+        return super().form_valid(form)
+
+    def test_func(self):
+        category = self.get_object()
+        if self.request.user == category.author:
+            return True
+        else:
+            return False
 
 
 @login_required
