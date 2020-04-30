@@ -1,12 +1,24 @@
-from .forms import CategoryCreationForm, CategoryUpdateForm, UserMemocardCreationForm, MyForm
-from .models import CategoryMemoCard, MemoCard, Repeat, UserMemoCard
+from .forms import (CategoryCreationForm,
+                    CategoryUpdateForm,
+                    MyForm,
+                    UserMemocardCreationForm)
+from .models import (CategoryMemoCard,
+                    MemoCard,
+                    Repeat,
+                    UserMemoCard)
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.db.models import Q
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
-from django.views.generic import DeleteView, TemplateView, ListView, DetailView, CreateView, UpdateView
+from django.views.generic import (CreateView,
+                                DeleteView,
+                                DetailView,
+                                ListView,
+
+                                TemplateView,
+                                UpdateView)
 from django.views.generic.detail import SingleObjectMixin
 from django.views.generic.edit import FormMixin
 from stats.models import Statistic
@@ -36,18 +48,21 @@ class Cards(LoginRequiredMixin, ListView, FormMixin):
         return redirect('cards')
 
 
-class CategoryListView(LoginRequiredMixin, ListView):
+class CategoryCreationView(LoginRequiredMixin, CreateView):
     model = CategoryMemoCard
-    context_object_name = 'categories'
-    template_name = "memo_card/category.html"
+    form_class = CategoryCreationForm
+    template_name = 'memo_card/category_form.html'
 
-    def get_queryset(self):
-        user = self.request.user
-        return CategoryMemoCard.objects.filter(author=user)
+    def get_form(self, form_class=None):
+        if form_class is None:
+            form_class = self.get_form_class()
+        form = super(CategoryCreationView, self).get_form(form_class)
+        return form
 
-
-class HomeView(LoginRequiredMixin, TemplateView):
-    template_name = "memo_card/home.html"
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        messages.success(self.request, f'Storzono katygorię! Możesz dodać do niej fiszki.')
+        return super().form_valid(form)
 
 
 class CategoryDeleteView(LoginRequiredMixin,UserPassesTestMixin,DeleteView):
@@ -75,36 +90,33 @@ class CategoryDetailView(LoginRequiredMixin, DetailView):
         return context
 
 
-class MemoCardListView(LoginRequiredMixin, ListView):
-    model = UserMemoCard
-    template_name = "memo_card/category_detail_all.html"
-    context_object_name = 'memocards'
-
-    def get_context_data(self, **kwargs):
-        context = super(MemoCardListView, self).get_context_data(**kwargs)
-        context['category'] = CategoryMemoCard.objects.get(id=self.kwargs.get('pk'))
-        return context
+class CategoryListView(LoginRequiredMixin, ListView):
+    model = CategoryMemoCard
+    context_object_name = 'categories'
+    template_name = "memo_card/categories.html"
 
     def get_queryset(self):
-        category = CategoryMemoCard.objects.get(id=self.kwargs.get('pk'))
-        return UserMemoCard.objects.filter(category=category)
+        user = self.request.user
+        return CategoryMemoCard.objects.filter(author=user)
 
 
-class CategoryCreationView(LoginRequiredMixin, CreateView):
+class CategoryUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView, FormMixin):
     model = CategoryMemoCard
-    form_class = CategoryCreationForm
-    template_name = 'memo_card/category_form.html'
-
-    def get_form(self, form_class=None):
-        if form_class is None:
-            form_class = self.get_form_class()
-        form = super(CategoryCreationView, self).get_form(form_class)
-        return form
+    context_object_name = 'category'
+    template_name = 'memo_card/category_edit.html'
+    form_class = CategoryUpdateForm
 
     def form_valid(self, form):
         form.instance.author = self.request.user
-        messages.success(self.request, f'Storzono katygorię! Możesz dodać do niej fiszki.')
+        messages.success(self.request, f'Katygoria została poprawiona')
         return super().form_valid(form)
+
+    def test_func(self):
+        category = self.get_object()
+        if self.request.user == category.author:
+            return True
+        else:
+            return False
 
 
 class Dictionary(LoginRequiredMixin, ListView):
@@ -119,10 +131,14 @@ class Dictionary(LoginRequiredMixin, ListView):
         return Repeat.objects.filter(user_for=user).order_by('card__esp_title')
 
 
+class HomeView(LoginRequiredMixin, TemplateView):
+    template_name = "memo_card/home.html"
+
+
 class MemoCardCreateView(LoginRequiredMixin, CreateView):
     model = UserMemoCard
     form_class = UserMemocardCreationForm
-    template_name = 'memo_card/memocard-creator.html'
+    template_name = 'memo_card/memocard_creator.html'
 
     def get_form(self, form_class=None):
         if form_class is None:
@@ -156,38 +172,6 @@ class MemoCardDeleteView(LoginRequiredMixin,DeleteView):
         return self.post(request, *args, **kwargs)
 
 
-class CategoryUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView, FormMixin):
-    model = CategoryMemoCard
-    context_object_name = 'category'
-    template_name = 'memo_card/category_edit.html'
-    form_class = CategoryUpdateForm
-
-    def form_valid(self, form):
-        form.instance.author = self.request.user
-        messages.success(self.request, f'Katygoria została poprawiona')
-        return super().form_valid(form)
-
-    def test_func(self):
-        category = self.get_object()
-        if self.request.user == category.author:
-            return True
-        else:
-            return False
-
-
-class MemoCardRepeatView(LoginRequiredMixin, ListView):
-    model = UserMemoCard
-    context_object_name = 'memocard'
-    template_name = "memo_card/memocard-repeat.html"
-
-    def get_queryset(self):
-        category =  CategoryMemoCard.objects.get(id=self.kwargs.get('pk'))
-        try:
-            return UserMemoCard.objects.filter(category=category).order_by('?')[0]
-        except:
-            return []
-
-
 class MemoCardDetailView(LoginRequiredMixin, DetailView):
     context_object_name = 'memocard'
     template_name = 'memo_card/memocard_detail.html'
@@ -199,7 +183,29 @@ class MemoCardDetailView(LoginRequiredMixin, DetailView):
         return context
 
 
-@login_required
-def memocard_detail(request, pk):
-    memocard = UserMemoCard.objects.get(id=pk)
-    return render(request, 'memo_card/memocard_detail.html', {'memocard':memocard})
+class MemoCardListView(LoginRequiredMixin, ListView):
+    model = UserMemoCard
+    template_name = "memo_card/category_memocards_all.html"
+    context_object_name = 'memocards'
+
+    def get_context_data(self, **kwargs):
+        context = super(MemoCardListView, self).get_context_data(**kwargs)
+        context['category'] = CategoryMemoCard.objects.get(id=self.kwargs.get('pk'))
+        return context
+
+    def get_queryset(self):
+        category = CategoryMemoCard.objects.get(id=self.kwargs.get('pk'))
+        return UserMemoCard.objects.filter(category=category)
+
+
+class MemoCardRepeatView(LoginRequiredMixin, ListView):
+    model = UserMemoCard
+    context_object_name = 'memocard'
+    template_name = "memo_card/memocard_repeat.html"
+
+    def get_queryset(self):
+        category =  CategoryMemoCard.objects.get(id=self.kwargs.get('pk'))
+        try:
+            return UserMemoCard.objects.filter(category=category).order_by('?')[0]
+        except:
+            return []

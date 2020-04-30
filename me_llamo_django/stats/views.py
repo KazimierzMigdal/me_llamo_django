@@ -6,35 +6,5 @@ import datetime
 
 def statistics(request):
     user = request.user
-    days = []
-    day_right = []
-    day_wrong = []
-    day_near = []
-    week_right = 0
-    week_wrong = 0
-    week_near = 0
-    for days_ago in range(0,7):
-        day = datetime.date.today() -  datetime.timedelta(days=days_ago)
-        days.append(day)
-        try:
-            stats = Statistic.objects.get(Q(user=user)&Q(day=day))
-            week_right = week_right + stats.right
-            week_wrong = week_wrong + stats.wrong
-            week_near = week_near + stats.near
-            day_right.append(stats.right)
-            day_wrong.append(stats.wrong)
-            day_near.append(stats.near)
-        except:
-            day_right.append(0)
-            day_wrong.append(0)
-            day_near.append(0)
-    context = {
-        'week_right': week_right,
-        'week_wrong': week_wrong,
-        'week_near' : week_near,
-        'days':days,
-        'day_right':day_right,
-        'day_wrong':day_wrong,
-        'day_near':day_near
-    }
+    context = Statistic.objects.get_user_statistics(user)
     return render(request, 'stats/statistics.html', context)
