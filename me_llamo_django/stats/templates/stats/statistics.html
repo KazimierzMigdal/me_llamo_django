@@ -23,7 +23,7 @@
             <div class="card-stacked">
               <div class="card-content">
                 <span class="card-title">Dzisiaj</span>
-                {%if day_right.0 is 0 and day_wrong.0 is 0 and day_near.0 is 0 %}
+                {%if statistic.day_right.0 is 0 and statistic.day_wrong.0 is 0 and statistic.day_near.0 is 0 %}
                   <p>Nie ma jeszcze statystyk z dzisiejszego dnia. Powtórz fiszki by zobaczyć swoje efekty</p>
                 {% else %}
                   <div>
@@ -40,7 +40,7 @@
             <div class="card-stacked">
               <div class="card-content">
                 <span class="card-title">W tym tygodniu</span>
-                {%if week_right or week_wrong or week_near%}
+                {%if statistic.week_right or statistic.week_wrong or statistic.week_near%}
                   <div>
                       <canvas id="week-statistic-pie" style=" position: relative; height: 70vh; width: 25vw;"></canvas>
                   </div>
@@ -59,7 +59,7 @@
             <div class="card-stacked">
               <div class="card-content">
                 <span class="card-title">Dzień po dniu</span>
-                  {%if week_right or week_wrong or week_near%}
+                  {%if statistic.week_right or statistic.week_wrong or statistic.week_near%}
                   <div>
                       <canvas id="week-statistic-bar" style=" position: relative; height: 70vh; width: 65vw;"></canvas>
                   </div>
@@ -87,7 +87,7 @@ var myChart = new Chart(ctx, {
         "rgba(244, 67, 54, 1)",
         "rgba(255, 235, 59, 1)"
       ],
-      data: [{{week_right}}, {{week_wrong}}, {{week_near}}]
+      data: [{{statistic.week_right}}, {{statistic.week_wrong}}, {{statistic.week_near}}]
     }]
   },
   options: {
@@ -99,20 +99,20 @@ var myChart = new Chart(ctx, {
 new Chart(document.getElementById("week-statistic-bar"), {
     type: 'bar',
     data: {
-      labels: [{% for day in days reversed %} '{{ day }}' {% if not forloop.last%}, {% endif %}{% endfor%}],
+      labels: [{% for day in statistic.days reversed %} '{{ day }}' {% if not forloop.last%}, {% endif %}{% endfor%}],
       datasets: [
         {
           label: "Dobrze",
           backgroundColor: "rgba(76, 175, 80, 1)",
-          data: [{% for right in day_right reversed %} {{ right }} {% if not forloop.last%}, {% endif %}{% endfor%}]
+          data: [{% for right in statistic.day_right reversed %} {{ right }} {% if not forloop.last%}, {% endif %}{% endfor%}]
         }, {
           label: "Źle",
           backgroundColor: "rgba(244, 67, 54, 1)",
-          data: [{% for wrong in day_wrong reversed %} {{ wrong }} {% if not forloop.last%}, {% endif %}{% endfor%}]
+          data: [{% for wrong in statistic.day_wrong reversed %} {{ wrong }} {% if not forloop.last%}, {% endif %}{% endfor%}]
         }, {
           label: "Blisko",
           backgroundColor: "rgba(255, 235, 59, 1)",
-          data: [{% for near in day_near reversed %} {{ near }} {% if not forloop.last%}, {% endif %}{% endfor%}]
+          data: [{% for near in statistic.day_near reversed %} {{ near }} {% if not forloop.last%}, {% endif %}{% endfor%}]
         }
       ]
     },
@@ -143,7 +143,7 @@ var myChart = new Chart(ctx, {
         "rgba(244, 67, 54, 1)",
         "rgba(255, 235, 59, 1)"
       ],
-      data: [{{ day_right.0 }}, {{day_wrong.0}}, {{day_near.0}}]
+      data: [{{ statistic.day_right.0 }}, {{statistic.day_wrong.0}}, {{statistic.day_near.0}}]
     }]
   },
   options: {

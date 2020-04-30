@@ -16,10 +16,8 @@ from django.views.generic import (CreateView,
                                 DeleteView,
                                 DetailView,
                                 ListView,
-
                                 TemplateView,
                                 UpdateView)
-from django.views.generic.detail import SingleObjectMixin
 from django.views.generic.edit import FormMixin
 from stats.models import Statistic
 import datetime
