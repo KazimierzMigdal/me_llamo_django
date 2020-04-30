@@ -175,14 +175,18 @@ class CategoryUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView, Fo
             return False
 
 
-@login_required
-def memocard_repeat(request, pk):
-    category = CategoryMemoCard.objects.get(id=pk)
-    try:
-        memocard = UserMemoCard.objects.filter(category=category).order_by('?')[0]
-    except:
-        memocard = []
-    return render(request, 'memo_card/memocard-repeat.html',{'category': category, 'memocard': memocard})
+class MemoCardRepeatView(LoginRequiredMixin, ListView):
+    model = UserMemoCard
+    context_object_name = 'memocard'
+    template_name = "memo_card/memocard-repeat.html"
+
+    def get_queryset(self):
+        category =  CategoryMemoCard.objects.get(id=self.kwargs.get('pk'))
+        try:
+            return UserMemoCard.objects.filter(category=category).order_by('?')[0]
+        except:
+            return []
+
 
 
 @login_required

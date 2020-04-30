@@ -12,7 +12,7 @@ urlpatterns = [
     path('category/<int:pk>/delete', views.CategoryDeleteView.as_view(), name='category_delete'),
     path('category/<int:pk>/edit/', views.CategoryUpdateView.as_view(), name ='category_edit'),
     path('category/<int:pk>/memocard-creator/', views.MemoCardCreateView.as_view(), name ='memocard_form'),
-    path('category/<int:pk>/repeat/', views.memocard_repeat, name ='memocard_repead'),
+    path('category/<int:pk>/repeat/', views.MemoCardRepeatView.as_view(), name ='memocard_repead'),
     path('category/form/', views.CategoryCreationView.as_view(), name ='category_form'),
     path('dictionary/', views.Dictionary.as_view(), name='dictionary'),
 ]

@@ -10,10 +10,10 @@
         <br>
         <div class="row">
           <div class="col l4 m4 s4">
-            <a href="{% url 'category_detail' category.id %}" class="waves-effect waves-light btn red left"><i class="material-icons left">arrow_back</i>Wróć do katygorii</a>
+            <a href="{% url 'category_detail' memocard.category.id %}" class="waves-effect waves-light btn red left"><i class="material-icons left">arrow_back</i>Wróć do katygorii</a>
           </div>
           <div class="col l4 m4 s4 offset-s4 offset-m4 offset-l4">
-            <a href="{% url 'memocard_repead' category.id %}" class="waves-effect waves-light btn red right"><i class="material-icons right">arrow_forward</i>Next</a>
+            <a href="{% url 'memocard_repead' memocard.category.id %}" class="waves-effect waves-light btn red right"><i class="material-icons right">arrow_forward</i>Next</a>
           </div>
         </div>
       </div>
@@ -29,11 +29,10 @@
         <p class="grey-text">Dodaj fiszki do tej katygorii żeby móc je powtarzać</p>
         <br>
         <div class="row">
-          <a href="{% url 'category_detail' category.id %}"  class='card-link'><button class="btn-floating waves-effect waves-light red right"><i class="material-icons">arrow_forward</i></button></a>
+          <a href="{% url 'category_detail' memocard.category.id %}"  class='card-link'><button class="btn-floating waves-effect waves-light red right"><i class="material-icons">arrow_forward</i></button></a>
         </div>
         <br>
       </div>
     </div>
   {% endif %}
-
 {% endblock %}
